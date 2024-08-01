@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Color definitions
 R="$(printf '\033[1;31m')"                           
 G="$(printf '\033[1;32m')"
 Y="$(printf '\033[1;33m')"
@@ -7,75 +9,109 @@ C="$(printf '\033[1;36m')"
 W="$(printf '\033[1;37m')"
 BOLD="$(printf '\033[1m')"
 
+# Clear the screen
 clear
-python3 $PREFIX/bin/photo.py $@
-echo "${G}${BOLD} PRESS 1 TO ENTER SAFE MODE ....... "${W}
-read -t 2 -n1 -s key
-pkill -9 pulseaudio 
-if [[ "$key" == "1" ]]; then
-    echo "${G}${BOLD} Safe MODE DARKOS.....STARTING"${W}
+
+# Function to check server status
+check_server_status() {
+    local url="$1"
+    echo "${G}[${W}-${G}] Connecting to Smlator Servers..."
+    sleep 3
+
+    if curl -s --head "$url" | head -n 1 | grep "200 OK" > /dev/null; then
+        response=$(curl -s "$url")
+        if echo "$response" | grep -q "Opened"; then
+            return 0
+        else
+            echo "${R}[${W}-${R}] Failed to connect to Smlator servers."
+            return 1
+        fi
+    else
+        echo "${R}[${W}-${R}] Failed to fetch server status."
+        return 1
+    fi
+}
+
+# Start DARKOS
+start_darkos() {
+    # Clear the screen
+    clear
+
+    # Remove LD_PRELOAD environment variable if it exists
+    if [[ -n "$LD_PRELOAD" ]]; then
+        unset LD_PRELOAD
+    fi
+
+    # Check server status
+    if ! check_server_status "https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/status"; then
+        sleep 3
+        termux-exit
+        exit 1
+    fi
+
+    # Print starting message
+    echo "${G}[${W}-${G}] Starting ${W}"
+
+    # Start Termux X11 and PulseAudio
     termux-x11 :0 &>/dev/null &
-   # pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1 &>/dev/null
-  
-   if [[ -f "/system/lib64/libskcodec.so" ]] ; then
-  LD_PRELOAD="/system/lib64/libskcodec.so" pulseaudio --start --exit-idle-time=-1 &
-  sleep 1
-  pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 
+    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1 &>/dev/null
+}
 
-else
-   pulseaudio --start --exit-idle-time=-1 &
-   sleep 1
-   pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-fi
+# Run the Python script
+python3 $PREFIX/bin/photo.py "$@"
 
-    python3 $PREFIX/bin/darkos.py $@
+# Prompt for Safe Mode
+echo "${G}${BOLD} PRESS 1 TO ENTER SAFE MODE ....... ${W}"
+read -t 2 -n1 -s key
+
+# Safe Mode handling
+if [[ "$key" == "1" ]]; then
+    echo "${G}${BOLD} Safe MODE SmLator.....STARTING${W}"
+    termux-x11 :0 &>/dev/null &
+    pkill -9 pulseaudio 
+    if [[ -f "/system/lib64/libskcodec.so" ]] ; then
+        LD_PRELOAD="/system/lib64/libskcodec.so" pulseaudio --start --exit-idle-time=-1 &
+        sleep 1
+        pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 
+    else
+        pulseaudio --start --exit-idle-time=-1 &
+        sleep 1
+        pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+    fi
+    python3 $PREFIX/bin/darkos.py "$@"
     exit 0
 elif [[ "$key" == " " ]]; then
-    echo "${G}${BOLD} Booting DARKOS 🖤 "${W}
+    echo "${G}${BOLD} Booting SmLator 🖤 ${W}"
 fi
 
+# Check for updates
 old_version="0.971"
 new_version=$(curl -s https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/currently%20version.txt)
 
 if ping -q -c 1 -W 1 google.com >/dev/null; then
-    echo "${G}${BOLD} Welcome 🤗"${W}
+    echo "${G}${BOLD} Welcome 🤗${W}"
     if awk 'BEGIN{exit !('$old_version' < '$new_version')}'; then
         echo ""
-        echo "${G}${BOLD} update available ⏫....to version : ${C}${BOLD}$new_version"${W}
+        echo "${G}${BOLD} Update available ⏫....to version : ${C}${BOLD}$new_version${W}"
         sleep 3
-else
-        echo "${G}${BOLD} installed version : ${C}${BOLD}$old_version"${W}
+    else
+        echo "${G}${BOLD} Installed version : ${C}${BOLD}$old_version${W}"
         sleep 1
     fi
 else
-    echo "${G}${BOLD} no internet connection 😔🛜"${W}
+    echo "${G}${BOLD} No internet connection 😔🛜${W}"
 fi
 
-if [[ -v LD_PRELOAD ]]; then
-    unset LD_PRELOAD
-fi
-echo ""
-echo "${G}${BOLD} Booting DARKOS 🖤"${W}
+# Boot DARKOS
+start_darkos
 
-termux-x11 :0 &>/dev/null &
-#pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1 &>/dev/null
-if [[ -f "/system/lib64/libskcodec.so" ]] ; then
-  LD_PRELOAD="/system/lib64/libskcodec.so" pulseaudio --start --exit-idle-time=-1 &
-  sleep 1
-  pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 
-
-else
-   pulseaudio --start --exit-idle-time=-1 &
-   sleep 1
-   pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-fi
-
+# Custom theme handling
 custom_darkos="$PREFIX/glibc/opt/darkos/custom_theme.txt"
 
-if [ -f "$custom_darkos" ]; then
+if [[ -f "$custom_darkos" ]]; then
     export DISPLAY=:0
     startxfce4 &>/dev/null &
-    python3 $PREFIX/glibc/opt/scripts/custom_style.py $@
+    python3 $PREFIX/glibc/opt/scripts/custom_style.py "$@"
 else
-    python3 $PREFIX/bin/run-darkos.py $@
+    python3 $PREFIX/bin/run-darkos.py "$@"
 fi

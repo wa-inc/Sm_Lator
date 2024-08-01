@@ -39,7 +39,7 @@ try:
     os.system("rm $PREFIX/bin/darkos")
     os.system("wget -O run-darkos.py https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/run-darkos.py")
     os.system("wget -O darkos.py https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/darkos.py")
-    os.system("wget -O darkos https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/darkos")
+    os.system("wget -O darkos https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/darkos")
     os.system("wget -O debug-darkos.py https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/debug-darkos.py")
     os.system("wget -O setting-darkos.py https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/setting-darkos.py")
     os.system("wget -O update-darkos.py https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/update-darkos.py")
