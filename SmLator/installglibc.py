@@ -4,8 +4,9 @@ import zipfile
 import tarfile
 from tqdm import tqdm
 import sys
-import requests
 import time
+import sys, urllib.request, urllib.error
+
 
 R = "\033[1;31m"
 G = "\033[1;32m"
@@ -20,19 +21,30 @@ def check_server_status(url):
     try:
         print(f"{G}[{W}-{G}] Connecting to Smlator Servers...")
         time.sleep(3)
-        response = requests.get(url)
-        if response.status_code == 200:
-            if "Opened" in response.text:
-                return True
+        
+        with urllib.request.urlopen(url) as response:
+            status_code = response.getcode()
+            response_text = response.read().decode('utf-8')
+
+            if status_code == 200:
+                if "Opened" in response_text:
+                    return True
+                else:
+                    print(f"{R}[{W}-{R}] Failed to connect to Smlator servers ..")
+                    return False
             else:
-                print(f"{R}[{W}-{R}] Failed to connect to Smlator servers.")
+                print(f"{R}[{W}-{R}] Failed to fetch server status")
                 return False
-        else:
-            print(f"{R}[{W}-{R}] Failed to fetch server status.")
-            return False
+    except urllib.error.HTTPError as e:
+        print(f"{R}[{W}-{R}] Failed to connect to Smlator Servers: {e.code} - {e.reason}")
+        return False
+    except urllib.error.URLError as e:
+        print(f"{R}[{W}-{R}] Failed to connect to Smlator Servers: {e.reason}")
+        print(f"{R}[{W}-{R}] No internet connection")
+        return False
     except Exception as e:
-        print(f"{R}[{W}-{R}] Error: {e}")
-        print(f"{R}[{W}-{R}] No internet connection.")
+        print(f"{R}[{W}-{R}] Failed to connect to Smlator Servers: {e}")
+        print(f"{R}[{W}-{R}] No internet connection")
         return False
 
 def extract_archive(file_path, extract_to):
