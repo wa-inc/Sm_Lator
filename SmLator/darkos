@@ -27,7 +27,7 @@ check_server_status() {
             return 1
         fi
     else
-        echo "${R}[${W}-${R}] Failed to fetch server status .."
+        echo "${R}[${W}-${R}] Error fetching the server status ."
         return 1
     fi
 }
