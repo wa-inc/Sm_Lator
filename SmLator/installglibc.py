@@ -236,7 +236,7 @@ def scripts():
     os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/update-darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/debug-darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/setting-darkos.py &>/dev/null")
-    os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/photo.py &>/dev/null")
+    os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/photo.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/darkos &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/run-darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/darkos.py &>/dev/null")
