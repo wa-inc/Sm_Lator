@@ -23,11 +23,11 @@ check_server_status() {
         if echo "$response" | grep -q "Opened"; then
             return 0
         else
-            echo "${R}[${W}-${R}] Failed to connect to Smlator servers."
+            echo "${R}[${W}-${R}] Failed to connect to Smlator servers .."
             return 1
         fi
     else
-        echo "${R}[${W}-${R}] Failed to fetch server status."
+        echo "${R}[${W}-${R}] Failed to fetch server status .."
         return 1
     fi
 }
