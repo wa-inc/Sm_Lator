@@ -91,7 +91,7 @@ def start_darkos():
     if "LD_PRELOAD" in os.environ:
         del os.environ["LD_PRELOAD"]
 
-    if not check_server_status("https://raw.githubusercontent.com/wa-inc/smLatorBeta/main/status"):
+    if not check_server_status("https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/status"):
         time.sleep(3)
         os.system("termux-exit")
         sys.exit(1)

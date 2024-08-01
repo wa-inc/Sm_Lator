@@ -104,7 +104,7 @@ def start_darkos():
     if "LD_PRELOAD" in os.environ:
         del os.environ["LD_PRELOAD"]
 
-    if not check_server_status("https://raw.githubusercontent.com/wa-inc/smLatorBeta/main/status"):
+    if not check_server_status("https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/status"):
         time.sleep(3)
         os.system("termux-exit")
         sys.exit(1)
@@ -221,13 +221,13 @@ def install_wine9():
     extract_archive('wine-default.tar.xz','/data/data/com.termux/files/usr/glibc/opt/wine/1/')
     os.system("apt reinstall vulkan-icd-loader-glibc -y &>/dev/null")
 def scripts():
-    os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/update-darkos.py &>/dev/null")
+    os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/update-darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/debug-darkos.py &>/dev/null")
-    os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/setting-darkos.py &>/dev/null")
+    os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/setting-darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/photo.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/darkos &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/run-darkos.py &>/dev/null")
-    os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/darkos.py &>/dev/null")
+    os.system("wget https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/darkos.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/cpu_boost.py &>/dev/null")
     os.system("wget https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/boost_launcher &>/dev/null")

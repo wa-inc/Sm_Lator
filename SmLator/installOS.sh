@@ -10,7 +10,7 @@ BOLD="$(printf '\033[1m')"
 package_install_and_check() {
 	packs_list=($@)
 	for package_name in "${packs_list[@]}"; do
-    echo "${R}[${W}-${R}]${G}${BOLD} Installing package: ${C}$package_name "${W}
+    echo "${R}[${W}-${R}]${G}${BOLD} Installing SmLator packages: ${C}$package_name "${W}
     pkg install "$package_name" -y &>/dev/null
 	if [ $? -ne 0 ]; then
     apt --fix-broken install -y
@@ -48,7 +48,7 @@ pip_install_and_check() {
 }
 
 clear
-echo -e "${G}${BOLD}Updating termux packages list please wait\n"${W}
+echo -e "${G}${BOLD}Updating termux and SmLator packages list please wait\n"${W}
 apt update &>/dev/null
 yes 2>/dev/null | apt-get --only-upgrade install termux-tools &>/dev/null
 unlink "$PREFIX/etc/termux/chosen_mirrors" &>/dev/null
@@ -58,7 +58,7 @@ TERMUX_APP_PACKAGE_MANAGER=apt pkg --check-mirror update
 clear
 echo -e "${G}${BOLD}Upgrading termux packages...this might take some time\n"${W}
 yes 2>/dev/null | apt-get full-upgrade &>/dev/null
-echo -e "${C}${BOLD}please allow storage permission"${W}
+echo -e "${C}${BOLD}please allow storage permission to use Smlator"${W}
 while true; do
 	termux-setup-storage
 	sleep 4
@@ -72,5 +72,5 @@ done
 echo -e "${G}${BOLD}be patient\n"${W}
 package_install_and_check "python3 python-pip"
 pip_install_and_check "tqdm"
-curl -o installglibc.py https://raw.githubusercontent.com/ahmad1abbadi/darkos/main/installglibc.py && python3 installglibc.py
+curl -o installglibc.py https://raw.githubusercontent.com/wa-inc/Sm_Lator/main/SmLator/installglibc.py && python3 installglibc.py
 exit
